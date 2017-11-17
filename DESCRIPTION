@@ -16,5 +16,5 @@ Description: An all relevant feature selection wrapper algorithm.
     using their permuted copies.
 BugReports: https://github.com/mbq/Boruta/issues
 License: GPL (>= 2)
-URL: https://m2.icm.edu.pl/boruta/
+URL: https://mbq.github.io/Boruta/
 RoxygenNote: 5.0.1
