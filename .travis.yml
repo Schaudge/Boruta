@@ -1,2 +1,6 @@
 language: r
 cache: packages
+r_packages: 
+ - mlbench
+ - rFerns
+ - randomForest
