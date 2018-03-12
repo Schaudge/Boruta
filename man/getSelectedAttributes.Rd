@@ -19,11 +19,11 @@ A character vector with names of the relevant attributes.
 }
 \examples{
 \dontrun{
-data(iris);
+data(iris)
 #Takes some time, so be patient
-Boruta(Species~.,data=iris,doTrace=2)->Bor.iris;
-print(Bor.iris);
-print(getSelectedAttributes(Bor.iris));
+Boruta(Species~.,data=iris,doTrace=2)->Bor.iris
+print(Bor.iris)
+print(getSelectedAttributes(Bor.iris))
 }
 }
 \author{

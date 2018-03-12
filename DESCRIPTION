@@ -13,4 +13,5 @@ Description: An all relevant feature selection wrapper algorithm.
 BugReports: https://github.com/mbq/Boruta/issues
 License: GPL (>= 2)
 URL: https://mbq.github.io/Boruta/
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
+Encoding: UTF-8

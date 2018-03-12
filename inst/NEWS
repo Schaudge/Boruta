@@ -1,3 +1,6 @@
+Changes in 5.3:
+	- Codebase modernisation.
+
 Changes in 5.2:
        - New status messages, including proper grammar and a count of
        still undecided attributes. (Thanks to Aristide Mooyaart for
