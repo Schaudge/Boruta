@@ -149,3 +149,35 @@ getImpFerns<-function(x,y,...){
  f$importance[,1]
 }
 comment(getImpFerns)<-'rFerns importance'
+
+#' Xgboost importance
+#'
+#' This function is intended to be given to a \code{getImp} argument of \code{\link{Boruta}} function to be called by the Boruta algorithm as an importance source.
+#' @param x data frame of predictors including shadows.
+#' @param y response vector.
+#' @param nrounds Number of rounds; passed to the underlying \code{\link[xgboost]{xgboost}} call.
+#' @param verbose Verbosity level of xgboost; either 0 (silent) or 1 (progress reports). Passed to the underlying \code{\link[xgboost]{xgboost}} call.
+#' @param ... other parameters passed to the underlying \code{\link[xgboost]{xgboost}} call.
+#' Similarly as \code{nrounds} and \code{verbose}, they are relayed from \code{...} of \code{\link{Boruta}}. 
+#' For convenience, this function sets \code{nrounds} to 5 and verbose to 0, but this can be overridden.
+#' @note Only dense matrix interface is supported; all predictions given to \code{\link{Boruta}} call have to be numeric (not integer).
+#' Categorical features should be split into indicator attributes.
+#' This functionality is inspired by the Python package BoostARoota by Chase DeHan.
+#' I have some doubts whether boosting importance can be used for all relevant selection without hitting substantial false negative rates; please consider this functionality experimental.
+#' @references \url{https://github.com/chasedehan/BoostARoota}
+#' @export
+
+getImpXgboost<-function(x,y,nrounds=5,verbose=0,...){
+ xgboost::xgb.importance(
+  model=xgboost::xgboost(
+   data=as.matrix(x),
+   label=y,
+   nrounds=nrounds,
+   verbose=verbose
+  )
+ )->imp
+ rep(0,ncol(x))->ans
+ ans[as.numeric(imp$Feature)+1]<-imp$Gain
+ ans
+}
+comment(getImpXgboost)<-'xgboost gain importance'
