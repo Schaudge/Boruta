@@ -1,5 +1,6 @@
 Changes in XX:
  - Migration from GitHub to NotABug.
+ - Extra-trees importance.
 
 Changes in 5.3:
  - Xgboost importance.
