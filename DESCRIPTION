@@ -17,8 +17,8 @@ Authors@R: c(
  )
 Description: An all relevant feature selection wrapper algorithm.
  It finds relevant features by comparing original attributes' importance with importance achievable at random, estimated using their permuted copies (shadows).
-BugReports: https://github.com/mbq/Boruta/issues
+BugReports: https://notabug.org/mbq/Boruta/issues
 License: GPL (>= 2)
-URL: https://mbq.github.io/Boruta/
+URL: https://notabug.org/mbq/Boruta/
 RoxygenNote: 6.0.1.9000
 Encoding: UTF-8

@@ -1,3 +1,6 @@
+Changes in XX:
+ - Migration from GitHub to NotABug.
+
 Changes in 5.3:
  - Xgboost importance.
  - Codebase modernisation.
