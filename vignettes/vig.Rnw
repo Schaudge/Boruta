@@ -1,0 +1,82 @@
+\documentclass[a4]{article}
+\usepackage[utf8]{inputenc}
+%\usepackage[U8]{fontenc}
+
+\title{Boruta for those in a hurry}
+\author{Miron B. Kursa}
+
+\begin{document}
+\maketitle
+
+\section{Overview}
+Boruta is a feature selection method; that is, it expects a standard information system you'd fed to a classifier, and judges which of the features are important and which are not.
+Let's try it with a sample dataset, say \texttt{iris}. 
+To make things interesting, we will add some nonsense features to see if they get filtered out; to this end, we randomly mix the order of elements in each of the original features, wiping out its interaction with the decision, \texttt{iris\$Species}.
+
+<<setGeneration>>=
+data(iris)
+irisE<-cbind(
+ setNames(
+  data.frame(apply(iris[,-5],2,sample)),
+  sprintf("Nonsense%d",1:4)
+ ),
+ iris
+)
+@
+
+Now, time for Boruta:
+
+<<Boruta>>=
+library(Boruta)
+Boruta(Species~.,data=irisE)->BorutaOnIrisE
+BorutaOnIrisE
+@
+
+As one can see, the method had \textit{rejected} nonsense features and \textit{confirmed} (retained) the original ones, as it was to be expected.
+What is important is that Boruta does a sharp classification of features rather than ordering, which is in contrast to many other feature selection methods.
+The other substantial difference is that Boruta is an \textit{all relevant} method, hence aims to find all features connected with the decision --- most other methods are of a \textit{minimal optimal} class, consequently aims to provide a possibly compact set of features which carry enough information for a possibly optimal classification on the reduced set.
+What does it mean in practice is that Boruta will include redundant features, that is ones which carry information already contained in other features.
+
+As an example, let's add a feature which contains all the information in the decision in a most accessible form --- namely, a copy of the decision, and push it into Boruta.
+
+<<BorutaReduendancy>>=
+irisR<-cbind(
+ irisE,
+ SpoilerFeature=iris$Species
+)
+Boruta(Species~.,data=irisR)
+@
+
+We see that \texttt{SpoilerFeature} has not kicked any of the original features, despite it made them fully redundant.
+One may wonder, however, how came anyone would need something which is clearly redundant?
+There are basically three reasons behind this:
+\begin{itemize}
+ \item One may perform feature selection for an insight in which aspects of the phenomenon in question are important are which are not.
+ In such case subtle effects possess substantial explanatory value, even if they are masked by stronger interactions.
+ \item In some sets, especially of a $p\gg n$ class, nonsense features may have spurious correlations with the decision, arisen purely by chance. 
+ Such interactions may rival or even be stronger than the actual mechanisms of the underlying phenomenon, making them apparently redundant.
+ All relevant approach won't magically help distinguish both, but will better preserve true patterns.
+ \item Minimal optimal methods are generally cherry-picking features usable for classification, regardless if this usability is significant or not, which is an easy way to overfitting.
+ Boruta is much more robust in this manner.
+\end{itemize}
+
+\section{Mechanism}
+
+Under the hood, Boruta uses feature importance scores which are provided by certain machine learning methods; in particular Random Forest, which happens to be used by default (using the \texttt{ranger} package implementation).
+Such scores only contribute to the ranking of features, though --- to separate relevant features, we need some reference of what is a distribution of importance of an irrelevant feature (in a way, we perform a standard hypothesis testing in which importance is a test statistic and null hypothesis claims that feature is irrelevant).
+To this end, Boruta uses \textit{shadow features} or \textit{shadows}, which are copies of original features but with randomly mixed values, so that their distribution remains the same but importance is wiped out.
+
+
+
+This and that; let's plot 
+<<BorutaPlot,fig=TRUE>>=
+plot(BorutaOnIrisE)
+@
+
+
+
+
+
+
+\section{Frequently asked questions}
+\end{document}
