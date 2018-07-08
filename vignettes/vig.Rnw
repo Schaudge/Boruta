@@ -1,12 +1,15 @@
 \documentclass[a4]{article}
+
+%\VignetteIndexEntry{Boruta for those in a hurry}
 \usepackage[utf8]{inputenc}
 %\usepackage[U8]{fontenc}
-
 \title{Boruta for those in a hurry}
 \author{Miron B. Kursa}
 
 \begin{document}
 \maketitle
+
+\setkeys{Gin}{width=\textwidth}
 
 \section{Overview}
 Boruta is a feature selection method; that is, it expects a standard information system you'd fed to a classifier, and judges which of the features are important and which are not.
@@ -14,6 +17,7 @@ Let's try it with a sample dataset, say \texttt{iris}.
 To make things interesting, we will add some nonsense features to see if they get filtered out; to this end, we randomly mix the order of elements in each of the original features, wiping out its interaction with the decision, \texttt{iris\$Species}.
 
 <<setGeneration>>=
+set.seed(17)
 data(iris)
 irisE<-cbind(
  setNames(
@@ -63,20 +67,69 @@ There are basically three reasons behind this:
 \section{Mechanism}
 
 Under the hood, Boruta uses feature importance scores which are provided by certain machine learning methods; in particular Random Forest, which happens to be used by default (using the \texttt{ranger} package implementation).
-Such scores only contribute to the ranking of features, though --- to separate relevant features, we need some reference of what is a distribution of importance of an irrelevant feature (in a way, we perform a standard hypothesis testing in which importance is a test statistic and null hypothesis claims that feature is irrelevant).
-To this end, Boruta uses \textit{shadow features} or \textit{shadows}, which are copies of original features but with randomly mixed values, so that their distribution remains the same but importance is wiped out.
+Such scores only contribute to the ranking of features, though --- to separate relevant features, we need some reference of what is a distribution of importance of an irrelevant feature. %(in a way, we perform a standard hypothesis testing in which importance is a test statistic and null hypothesis claims that feature is irrelevant).
+To this end, Boruta uses \textit{shadow features} or \textit{shadows}, which are copies of original features but with randomly mixed values, so that their distribution remains the same yet importance is wiped out.
 
-
-
-This and that; let's plot 
-<<BorutaPlot,fig=TRUE>>=
+\begin{figure}
+<<BorutaPlots,fig=TRUE,echo=FALSE,results=hide,width=10,height=5>>=
+par(mfrow=c(1,2))
 plot(BorutaOnIrisE)
+plotImpHistory(BorutaOnIrisE)
+@
+\caption{\label{fig:plots} The result of calling \texttt{plot} (left) and \texttt{plotImpHistory} (right) on the \texttt{BorutaOnIrisE} object.}
+\end{figure}
+
+Because the importance scoring is often stochastic and can be degraded due to a presence of shadows, the Boruta selection is a process.
+In each iteration, first shadows are generated, and such extended dataset is fed to an importance provider.
+Original features' importance is then compared with the highest importance of a shadow; and these which score higher are given a \textit{hit}.
+Accumulated hit counts are finally assessed; features which significantly outperform best shadow are claimed confirmed, which these which significantly underperform best shadow are claimed rejected and removed from the set for subsequent iterations.
+
+The algorithm stops when all features have an established decision, or when a pre-set maximal number of iterations (100 by default) is exhausted.
+In the latter case, the remaining features are claimed \textit{tentative}.
+
+The process can be observed live with \texttt{doTrace} argument set to 1 (report after each decision) or 2 (report after each iteration); importances in each iteration are also stored in the \texttt{ImpHistory} element of the Boruta object.
+The graphical summary of a run can be obtained using \texttt{plot} and \texttt{plotImpHistory} on the Boruta result object, as shown on Figure~\ref{fig:plots} for the extended iris example.
+First function uses boxplots to show the distribution of features' importance over Boruta run, using colours to mark final decision; it also draws boxplots for the importance of worst, average and best shadow in each iterations (in blue).
+Second function visualises the same data, but as a function of the iteration number.
+
+Knowing that we may try a more complex example, in which we will expand iris with a family of copies of its strongest feature, Petal.Length, disturbed by a Gaussian noise of an increasing amplitude.
+
+%TODO: Does it makes sense?
+
+<<noisyIris>>=
+noiseSds<-1:12
+noise<-mapply(rnorm,nrow(iris),0,noiseSds)
+cbind(
+ setNames(
+  data.frame(iris$Petal.Length+noise),
+  sprintf("PL_s%d",noiseSds)
+ ),
+ iris
+)->irisN
+
+Boruta(Species~.,data=irisN,doTrace=1)->BorutaOnIrisN
+print(BorutaOnIrisN)
 @
 
+%TODO: plot(normHits~meanImp,attStats(BorutaOnIrisN),col=decision)
+
+As one can see, noisy features formed a near continuous spectrum in the importance space, while Boruta provides a threshold thanks to shadows, even though with a cost of some tentative features.
 
 
+\section{Importance sources}
+
+\section{Caveats}
+
+%TODO: ntree must be large enough
+
+Importance history for a bigger problems may take impractically huge amount of memory; hence its collection can be turned off with \texttt{holdHistory} argument of the \texttt{Boruta} function.
+This will disable some functionality, though, most notably plotting.
+
+%TODO: Formula is slow, etc.
+
+\section{Tools}
+
+\section{Further reading}
 
 
-
-\section{Frequently asked questions}
 \end{document}
