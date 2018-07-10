@@ -1,5 +1,6 @@
 Changes in XX:
  - Migration from GitHub to NotABug.
+ - Additional verbosity level, doTrace=3.
 
 Changes in 5.3:
  - Xgboost importance.
