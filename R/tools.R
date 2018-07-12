@@ -1,8 +1,4 @@
 # Supplementary routines for Boruta.
-# Author: Miron B. Kursa
-###############################################################################
-
-### Extractors ###
 
 #' Extract attribute statistics
 #'
@@ -61,8 +57,6 @@ getSelectedAttributes<-function(x,withTentative=FALSE){
  ]
 }
 
-### TentativeRoughFix ###
-
 #' Rough fix of Tentative attributes
 #'
 #' In some circumstances (too short Boruta run, unfortunate mixing of shadow attributes, tricky dataset\ldots), Boruta can leave some attributes Tentative.
@@ -107,7 +101,6 @@ TentativeRoughFix<-function(x,averageOver=Inf){
 
  nRuns<-dim(x$ImpHistory)[1]
 
-
  if(averageOver>nRuns)
   averageOver<-nRuns
 
@@ -126,9 +119,7 @@ TentativeRoughFix<-function(x,averageOver=Inf){
  return(ans)
 }
 
-### Plots ###
-
-##generateCol is internaly used by plot.Boruta and plotImpHistory
+##generateCol is internally used by plot.Boruta and plotImpHistory
 generateCol<-function(x,colCode,col,numShadow){
  #Checking arguments
  if(is.null(col) & length(colCode)!=4)
@@ -238,8 +229,6 @@ plotImpHistory<-function(x,colCode=c('green','yellow','red','blue'),col=NULL,typ
  invisible(x)
 }
 
-### Formulae ###
-
 #' Export Boruta result as a formula
 #'
 #' Functions which convert the Boruta selection into a formula, so that it could be passed further to other functions.
@@ -250,23 +239,23 @@ plotImpHistory<-function(x,colCode=c('green','yellow','red','blue'),col=NULL,typ
 #' @rdname getFormulae
 #' @export
 getConfirmedFormula<-function(x){
-	if(!inherits(x,'Boruta'))
-	 stop('This function needs Boruta object as an argument.')
-	if(is.null(x$call[["formula"]]))
-	 stop('The model for this Boruta run was not a formula.')
-	deparse(x$call[["formula"]][[2]])->dec
-	preds<-paste(names(x$finalDecision)[x$finalDecision=='Confirmed'],collapse="+")
-	return(stats::as.formula(sprintf('%s~%s',dec,preds)))
+ if(!inherits(x,'Boruta'))
+  stop('This function needs Boruta object as an argument.')
+ if(is.null(x$call[["formula"]]))
+  stop('The model for this Boruta run was not a formula.')
+ deparse(x$call[["formula"]][[2]])->dec
+ preds<-paste(names(x$finalDecision)[x$finalDecision=='Confirmed'],collapse="+")
+ return(stats::as.formula(sprintf('%s~%s',dec,preds)))
 }
 
 #' @rdname getFormulae
 #' @export
 getNonRejectedFormula<-function(x){
-	if(!inherits(x,'Boruta'))
-	 stop('This function needs Boruta object as an argument.')
-	if(is.null(x$call[["formula"]]))
-	 stop('The model for this Boruta run was not a formula.')
-	deparse(x$call[["formula"]][[2]])->dec
-	preds<-paste(names(x$finalDecision)[x$finalDecision!='Rejected'],collapse="+")
-	return(stats::as.formula(sprintf('%s~%s',dec,preds)))
+ if(!inherits(x,'Boruta'))
+  stop('This function needs Boruta object as an argument.')
+ if(is.null(x$call[["formula"]]))
+  stop('The model for this Boruta run was not a formula.')
+ deparse(x$call[["formula"]][[2]])->dec
+ preds<-paste(names(x$finalDecision)[x$finalDecision!='Rejected'],collapse="+")
+ return(stats::as.formula(sprintf('%s~%s',dec,preds)))
 }

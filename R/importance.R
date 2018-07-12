@@ -1,6 +1,4 @@
-# Importance sources.
-# Author: Miron B. Kursa
-###############################################################################
+# Importance sources
 
 #' randomForest importance adapters
 #'
