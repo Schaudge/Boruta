@@ -155,7 +155,7 @@ Boruta.default<-function(x,y,pValue=0.01,mcAdj=TRUE,maxRuns=100,doTrace=0,holdHi
    intHits<-sum(hits[uncMask])
    if(intHits>0)
     message(sprintf("Assigned hit to %s attribute%s out of %s undecided.",sum(hits[uncMask]),if(intHits==1) "" else "s",sum(uncMask)))
-   else 
+   else
     message("None of undecided attributes scored a hit.")
   }
   hitReg[hits]<-hitReg[hits]+1
