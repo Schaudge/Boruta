@@ -26,7 +26,7 @@ Boruta<-function(x,...)
 #' You may increase it to resolve attributes left Tentative.
 #' @param holdHistory if set to \code{TRUE}, the full history of importance is stored and returned as the \code{ImpHistory} element of the result.
 #' Can be used to decrease a memory footprint of Boruta in case this side data is not used, especially when the number of attributes is huge; yet it disables plotting of such made \code{Boruta} objects and the use of the \code{\link{TentativeRoughFix}} function.
-#' @param doTrace verbosity level. 0 means no tracing, 1 means reporting decision about each attribute as soon as it is justified, 2 means same as 1, plus reporting each importance source run.
+#' @param doTrace verbosity level. 0 means no tracing, 1 means reporting decision about each attribute as soon as it is justified, 2 means the same as 1, plus reporting each importance source run, 3 means the same as 2, plus reporting of hits assigned to yet undecided attributes.
 #' @param ... additional parameters passed to \code{getImp}.
 #' @return An object of class \code{Boruta}, which is a list with the following components:
 #' \item{finalDecision}{a factor of three value: \code{Confirmed}, \code{Rejected} or \code{Tentative}, containing final result of feature selection.}
@@ -129,7 +129,7 @@ Boruta.default<-function(x,y,pValue=0.01,mcAdj=TRUE,maxRuns=100,doTrace=0,holdHi
   names(xSha)<-paste('shadow',1:nSha,sep="")
 
   #Notifying user of our progress
-  if(doTrace==2)
+  if(doTrace>1)
    message(sprintf(' %s. run of importance source...',runs))
 
   #Calling importance source; "..." can be used by the user to pass rf attributes (for instance ntree)
@@ -154,6 +154,14 @@ Boruta.default<-function(x,y,pValue=0.01,mcAdj=TRUE,maxRuns=100,doTrace=0,holdHi
  ##Assigns hits
  assignHits<-function(hitReg,curImp){
   curImp$imp>max(curImp$shaImp)->hits
+  if(doTrace>2){
+   uncMask<-decReg=="Tentative"
+   intHits<-sum(hits[uncMask])
+   if(intHits>0)
+    message(sprintf("Assigned hit to %s attribute%s out of %s undecided.",sum(hits[uncMask]),if(intHits==1) "" else "s",sum(uncMask)))
+   else 
+    message("None of undecided attributes scored a hit.")
+  }
   hitReg[hits]<-hitReg[hits]+1
   return(hitReg)
  }
