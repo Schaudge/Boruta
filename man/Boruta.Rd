@@ -118,6 +118,3 @@ Miron B. Kursa, Witold R. Rudnicki (2010). Feature Selection with the Boruta Pac
 \emph{Journal of Statistical Software, 36(11)}, p. 1-13.
 URL: \url{http://www.jstatsoft.org/v36/i11/}
 }
-\author{
-Miron B. Kursa, based on the idea & original code by Witold R. Rudnicki.
-}

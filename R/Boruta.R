@@ -47,7 +47,6 @@ Boruta<-function(x,...)
 #' @references Miron B. Kursa, Witold R. Rudnicki (2010). Feature Selection with the Boruta Package.
 #' \emph{Journal of Statistical Software, 36(11)}, p. 1-13.
 #' URL: \url{http://www.jstatsoft.org/v36/i11/}
-#' @author Miron B. Kursa, based on the idea & original code by Witold R. Rudnicki.
 #' @export
 #' @examples
 #' set.seed(777)
@@ -275,7 +274,6 @@ Boruta.formula<-function(formula,data=.GlobalEnv,...){
 #' @param x an object of a class Boruta.
 #' @param ... additional arguments passed to \code{\link{print}}.
 #' @return Invisible copy of \code{x}.
-#' @author Miron B. Kursa
 #' @export
 print.Boruta<-function(x,...){
  if(class(x)!='Boruta') stop("This is NOT a Boruta object!")
