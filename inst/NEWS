@@ -1,7 +1,8 @@
-Changes in XX:
+Changes in 6.0:
  - Migration from GitHub to NotABug.
  - Additional verbosity level, doTrace=3.
- - `Boruta for those in a hurry` vignette.  
+ - `Boruta for those in a hurry` vignette.
+ - Extra-trees importance.
 
 Changes in 5.3:
  - Xgboost importance.
