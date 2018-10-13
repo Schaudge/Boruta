@@ -31,5 +31,6 @@ for(e in impSources)
 
 test_that("Importance source getImpXgboost works",{
  set.seed(777)
- Boruta(Species~.,data=iris)->ans
+ #Xgboost importance is generally poor, lower expectations
+ expect_silent(Boruta(Species~.,data=iris))
 })
