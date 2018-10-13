@@ -201,8 +201,8 @@ getImpXgboost<-function(x,y,nrounds=5,verbose=0,...){
    verbose=verbose
   )
  )->imp
- rep(0,ncol(x))->ans
- ans[as.numeric(imp$Feature)+1]<-imp$Gain
+ setNames(rep(0,ncol(x)),colnames(x))->ans
+ ans[imp$Feature]<-imp$Gain
  ans
 }
 comment(getImpXgboost)<-'xgboost gain importance'
