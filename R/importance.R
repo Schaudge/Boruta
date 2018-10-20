@@ -201,7 +201,7 @@ getImpXgboost<-function(x,y,nrounds=5,verbose=0,...){
    verbose=verbose
   )
  )->imp
- setNames(rep(0,ncol(x)),colnames(x))->ans
+ stats::setNames(rep(0,ncol(x)),colnames(x))->ans
  ans[imp$Feature]<-imp$Gain
  ans
 }
