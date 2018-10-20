@@ -1,6 +1,6 @@
 Package: Boruta
 Title: Wrapper Algorithm for All Relevant Feature Selection
-Version: 6.0.0
+Version: 7.0.0
 Depends: ranger
 Suggests: mlbench, rFerns, randomForest, testthat, xgboost
 Authors@R: c(
@@ -20,5 +20,5 @@ Description: An all relevant feature selection wrapper algorithm.
 BugReports: https://notabug.org/mbq/Boruta/issues
 License: GPL (>= 2)
 URL: https://notabug.org/mbq/Boruta/
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.1.0
 Encoding: UTF-8
