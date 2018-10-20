@@ -1,15 +1,11 @@
 context("Importance source tests")
 
-#Set, as in https://mbq.me/blog/relevance-and-redundancy
-setNames(
- do.call(expand.grid,rep(list(c(T,F)),5)),
- c("A","B","N1","N2","N3")
-)->X
-cbind(X,AoB=with(X,A|B),AnB=with(X,A&B),nA=!X$A)->X
-factor(with(X,A!=B))->Y
-data.frame(lapply(X,factor))->X
-#Numeric value, for more fun
 set.seed(777)
+
+data(srx)
+X<-srx[,-ncol(srx)]
+Y<-srx$Y
+#Also a numeric nonsense feature, for more fun
 X$N4<-runif(nrow(X))
 
 impSources<-c(
