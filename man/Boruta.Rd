@@ -8,9 +8,17 @@
 \usage{
 Boruta(x, ...)
 
-\method{Boruta}{default}(x, y, pValue = 0.01, mcAdj = TRUE,
-  maxRuns = 100, doTrace = 0, holdHistory = TRUE,
-  getImp = getImpRfZ, ...)
+\method{Boruta}{default}(
+  x,
+  y,
+  pValue = 0.01,
+  mcAdj = TRUE,
+  maxRuns = 100,
+  doTrace = 0,
+  holdHistory = TRUE,
+  getImp = getImpRfZ,
+  ...
+)
 
 \method{Boruta}{formula}(formula, data = .GlobalEnv, ...)
 }
@@ -89,7 +97,7 @@ attStats(Boruta.srx)
 Boruta(Y~.,data=srx,getImp=getImpFerns)->Boruta.srx.ferns
 print(Boruta.srx.ferns)
 
-#Versbose
+#Verbose
 Boruta(Y~.,data=srx,doTrace=2)->Boruta.srx
 
 \dontrun{
@@ -119,9 +127,9 @@ library(mlbench); data(Ozone)
 library(randomForest)
 na.omit(Ozone)->ozo
 Boruta(V4~.,data=ozo,doTrace=2)->Bor.ozo
-cat('Random forest run on all attributes:\\n')
+cat('Random forest run on all attributes:\n')
 print(randomForest(V4~.,data=ozo))
-cat('Random forest run only on confirmed attributes:\\n')
+cat('Random forest run only on confirmed attributes:\n')
 print(randomForest(ozo[,getSelectedAttributes(Bor.ozo)],ozo$V4))
 }
 \dontrun{
