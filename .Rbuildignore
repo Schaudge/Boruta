@@ -3,3 +3,7 @@
 webpage
 .gitignore
 README.md
+.aux$
+.log$
+.bbl$
+.blg$

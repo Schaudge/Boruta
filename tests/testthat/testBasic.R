@@ -12,4 +12,10 @@ test_that("Selection works on an extended iris",{
   getSelectedAttributes(Boruta.iris.extended),
   names(iris)[-5]
  )
+
+ attStats(Boruta.iris.extended)->a
+ expect_equal(sort(rownames(a)),sort(names(iris.extended)[-5]))
+ 
+ getSelectedAttributes(Boruta.iris.extended)->a
+ expect_equal(sort(a),sort(names(iris)[-5]))
 })

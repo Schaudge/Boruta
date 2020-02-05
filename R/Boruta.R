@@ -1,6 +1,4 @@
-# Core of Boruta.
-# Author: Miron B. Kursa, based on the idea & original code by Witold R. Rudnicki
-###############################################################################
+# Core of Boruta
 
 #' @export
 #' @rdname Boruta
@@ -10,7 +8,7 @@ Boruta<-function(x,...)
 #' Feature selection with the Boruta algorithm
 #'
 #' Boruta is an all relevant feature selection wrapper algorithm, capable of working with any classification method that output variable importance measure (VIM); by default, Boruta uses Random Forest.
-#' The method performs a top-down search for relevant features by comparing original attributes' importance with importance achievable at random, estimated using their permuted copies, and progressively elliminating irrelevant featurs to stabilise that test.
+#' The method performs a top-down search for relevant features by comparing original attributes' importance with importance achievable at random, estimated using their permuted copies, and progressively eliminating irrelevant features to stabilise that test.
 #' @rdname Boruta
 #' @method Boruta default
 #' @param x data frame of predictors.
@@ -26,7 +24,7 @@ Boruta<-function(x,...)
 #' You may increase it to resolve attributes left Tentative.
 #' @param holdHistory if set to \code{TRUE}, the full history of importance is stored and returned as the \code{ImpHistory} element of the result.
 #' Can be used to decrease a memory footprint of Boruta in case this side data is not used, especially when the number of attributes is huge; yet it disables plotting of such made \code{Boruta} objects and the use of the \code{\link{TentativeRoughFix}} function.
-#' @param doTrace verbosity level. 0 means no tracing, 1 means reporting decision about each attribute as soon as it is justified, 2 means same as 1, plus reporting each importance source run.
+#' @param doTrace verbosity level. 0 means no tracing, 1 means reporting decision about each attribute as soon as it is justified, 2 means the same as 1, plus reporting each importance source run, 3 means the same as 2, plus reporting of hits assigned to yet undecided attributes.
 #' @param ... additional parameters passed to \code{getImp}.
 #' @return An object of class \code{Boruta}, which is a list with the following components:
 #' \item{finalDecision}{a factor of three value: \code{Confirmed}, \code{Rejected} or \code{Tentative}, containing final result of feature selection.}
@@ -46,26 +44,43 @@ Boruta<-function(x,...)
 #' They are claimed Tentative.
 #' You may try to extend \code{maxRuns} or lower \code{pValue} to clarify them, but in some cases their importances do fluctuate too much for Boruta to converge.
 #' Instead, you can use \code{\link{TentativeRoughFix}} function, which will perform other, weaker test to make a final decision, or simply treat them as undecided in further analysis.
-#' @note Version 5.0 and 2.0 change some name conventions and thus may be incompatible with scripts written for earlier Boruta versions.
-#' Solutions of most problems of this kind should boil down to change of \code{ZScoreHistory} to \code{ImpHistory} in script source or Boruta object structure.
 #' @references Miron B. Kursa, Witold R. Rudnicki (2010). Feature Selection with the Boruta Package.
 #' \emph{Journal of Statistical Software, 36(11)}, p. 1-13.
 #' URL: \url{http://www.jstatsoft.org/v36/i11/}
-#' @author Miron B. Kursa, based on the idea & original code by Witold R. Rudnicki.
 #' @export
 #' @examples
 #' set.seed(777)
-#' #Add some nonsense attributes to iris dataset by shuffling original attributes
+#'
+#' #Boruta on the "small redundant XOR" problem; read ?srx for details
+#' data(srx)
+#' Boruta(Y~.,data=srx)->Boruta.srx
+#'
+#' #Results summary
+#' print(Boruta.srx)
+#'
+#' #Result plot
+#' plot(Boruta.srx)
+#'
+#' #Attribute statistics
+#' attStats(Boruta.srx)
+#'
+#' #Using alternative importance source, rFerns
+#' Boruta(Y~.,data=srx,getImp=getImpFerns)->Boruta.srx.ferns
+#' print(Boruta.srx.ferns)
+#' 
+#' #Verbose
+#' Boruta(Y~.,data=srx,doTrace=2)->Boruta.srx
+#'
+#' \dontrun{
+#' #Boruta on the iris problem extended with artificial irrelevant features
+#' #Generate said features
 #' iris.extended<-data.frame(iris,apply(iris[,-5],2,sample))
 #' names(iris.extended)[6:9]<-paste("Nonsense",1:4,sep="")
 #' #Run Boruta on this data
 #' Boruta(Species~.,data=iris.extended,doTrace=2)->Boruta.iris.extended
 #' #Nonsense attributes should be rejected
 #' print(Boruta.iris.extended)
-#'
-#' #Boruta using rFerns' importance
-#' Boruta(Species~.,data=iris.extended,getImp=getImpFerns)->Boruta.ferns.irisE
-#' print(Boruta.ferns.irisE)
+#' }
 #'
 #' \dontrun{
 #' #Boruta on the HouseVotes84 data from mlbench
@@ -129,7 +144,7 @@ Boruta.default<-function(x,y,pValue=0.01,mcAdj=TRUE,maxRuns=100,doTrace=0,holdHi
   names(xSha)<-paste('shadow',1:nSha,sep="")
 
   #Notifying user of our progress
-  if(doTrace==2)
+  if(doTrace>1)
    message(sprintf(' %s. run of importance source...',runs))
 
   #Calling importance source; "..." can be used by the user to pass rf attributes (for instance ntree)
@@ -154,6 +169,14 @@ Boruta.default<-function(x,y,pValue=0.01,mcAdj=TRUE,maxRuns=100,doTrace=0,holdHi
  ##Assigns hits
  assignHits<-function(hitReg,curImp){
   curImp$imp>max(curImp$shaImp)->hits
+  if(doTrace>2){
+   uncMask<-decReg=="Tentative"
+   intHits<-sum(hits[uncMask])
+   if(intHits>0)
+    message(sprintf("Assigned hit to %s attribute%s out of %s undecided.",sum(hits[uncMask]),if(intHits==1) "" else "s",sum(uncMask)))
+   else
+    message("None of undecided attributes scored a hit.")
+  }
   hitReg[hits]<-hitReg[hits]+1
   return(hitReg)
  }
@@ -271,7 +294,6 @@ Boruta.formula<-function(formula,data=.GlobalEnv,...){
 #' @param x an object of a class Boruta.
 #' @param ... additional arguments passed to \code{\link{print}}.
 #' @return Invisible copy of \code{x}.
-#' @author Miron B. Kursa
 #' @export
 print.Boruta<-function(x,...){
  if(class(x)!='Boruta') stop("This is NOT a Boruta object!")
@@ -293,3 +315,15 @@ print.Boruta<-function(x,...){
  }
  invisible(x)
 }
+
+#' Small redundant XOR data
+#'
+#' A synthetic data set with 32 rows corresponding to all combinations of values of five logical features, A, B, N1, N2 and N3.
+#' The decision Y is equal to A xor B, hence N1--N3 are irrelevant attributes.
+#' The set also contains 3 additional features, A or B (AoB), A and B (AnB) and not A (nA), which provide a redundant, but still relevant way to reconstruct Y.
+#'
+#' This is set is an easy way to demonstrate the difference between all relevant feature selection methods, which should select all features except N1--N3, and minimal optimal ones, which will probably ignore most of them.
+#' @format A data frame with 8 predictors, 4 relevant: A, B, AoB, AnB and nA, as well as 3 irrelevant N1, N2 and N3, and decision attribute Y.
+#' @source \url{https://mbq.me/blog/relevance-and-redundancy}
+"srx"
+
