@@ -1,4 +1,5 @@
-.travis.yml
+.codecov.yml
+.gitlab-ci.yml
 .git
 webpage
 .gitignore
