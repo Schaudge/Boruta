@@ -191,14 +191,14 @@ comment(getImpFerns)<-'rFerns importance'
 #' I have some doubts whether boosting importance can be used for all relevant selection without hitting substantial false negative rates; please consider this functionality experimental.
 #' @references \url{https://github.com/chasedehan/BoostARoota}
 #' @export
-
 getImpXgboost<-function(x,y,nrounds=5,verbose=0,...){
  xgboost::xgb.importance(
   model=xgboost::xgboost(
    data=as.matrix(x),
    label=y,
    nrounds=nrounds,
-   verbose=verbose
+   verbose=verbose,
+   ...
   )
  )->imp
  stats::setNames(rep(0,ncol(x)),colnames(x))->ans
