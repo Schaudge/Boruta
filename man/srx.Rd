@@ -4,7 +4,9 @@
 \name{srx}
 \alias{srx}
 \title{Small redundant XOR data}
-\format{A data frame with 8 predictors, 4 relevant: A, B, AoB, AnB and nA, as well as 3 irrelevant N1, N2 and N3, and decision attribute Y.}
+\format{
+A data frame with 8 predictors, 4 relevant: A, B, AoB, AnB and nA, as well as 3 irrelevant N1, N2 and N3, and decision attribute Y.
+}
 \source{
 \url{https://mbq.me/blog/relevance-and-redundancy}
 }

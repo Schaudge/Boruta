@@ -20,7 +20,7 @@ Description: An all relevant feature selection wrapper algorithm.
 BugReports: https://notabug.org/mbq/Boruta/issues
 License: GPL (>= 2)
 URL: https://notabug.org/mbq/Boruta/
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Encoding: UTF-8
 NeedsCompilation: no
 Packaged: 2018-03-19 16:10:28 UTC; mbq
