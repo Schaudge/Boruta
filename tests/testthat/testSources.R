@@ -51,6 +51,7 @@ Yt[Yt>6.9]<-6.9
 #Mock Surv object
 Y<-cbind(time=Yt,status=Ys)
 class(Y)<-c("Surv")
+attr(Y,"type")<-"right"
 
 test_that("Ranger sources work on censored",{
  set.seed(777)
