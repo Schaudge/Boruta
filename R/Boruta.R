@@ -325,5 +325,6 @@ print.Boruta<-function(x,...){
 #' This is set is an easy way to demonstrate the difference between all relevant feature selection methods, which should select all features except N1--N3, and minimal optimal ones, which will probably ignore most of them.
 #' @format A data frame with 8 predictors, 4 relevant: A, B, AoB, AnB and nA, as well as 3 irrelevant N1, N2 and N3, and decision attribute Y.
 #' @source \url{https://mbq.me/blog/relevance-and-redundancy}
+#' @usage data(srx)
 "srx"
 
