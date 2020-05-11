@@ -1,0 +1,32 @@
+image: registry.gitlab.com/mbq/arrch:latest
+
+stages:
+  - base
+  - check
+
+r-base:
+  stage: base
+  script:
+    - R -e "dir.create(.libPaths()[1],recursive=TRUE,showWarnings=FALSE)"
+    - R -e "install.packages(c('randomForest','ranger','xgboost','rFerns','mlbench'),repos='https://cloud.r-project.org/')"
+    - R -e "devtools::document()"
+    - R -e "devtools::build('.','.')"
+    - R -e "devtools::test()"
+    - R -e "covr::codecov(quiet=FALSE,type='all')"
+    - R CMD check Boruta_*.tar.gz
+  artifacts:
+    paths:
+      - man/
+      - NAMESPACE
+      - Boruta_*.tar.gz
+
+r-dev-check:
+  stage: check
+  allow_failure: true
+  script:
+    - RD -e "dir.create(.libPaths()[1],recursive=TRUE,showWarnings=FALSE)"
+    - RD -e "install.packages(c('randomForest','ranger','xgboost','rFerns','mlbench'),repos='https://cloud.r-project.org/')"
+    - RD CMD check Boruta_*.tar.gz
+  artifacts:
+    paths:
+      - Boruta.Rcheck/
