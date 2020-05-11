@@ -19,6 +19,7 @@ r-base:
       - man/
       - NAMESPACE
       - Boruta_*.tar.gz
+      - Boruta.Rcheck/
 
 r-dev-check:
   stage: check
