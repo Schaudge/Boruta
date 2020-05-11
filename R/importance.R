@@ -73,7 +73,6 @@ comment(getImpLegacyRfGini)<-'randomForest Gini index importance'
 #' @param num.trees  Number of trees in the forest, as according to \code{\link{ranger}}'s nomenclature. If not given, set to \code{ntree} value. If both are given, \code{num.trees} takes precedence.
 #' @param ... parameters passed to the underlying \code{\link{ranger}} call; they are relayed from \code{...} of \code{\link{Boruta}}.
 #' @note Prior to Boruta 5.0, \code{getImpLegacyRfZ} function was a default importance source in Boruta; see \link{getImpLegacyRf} for more details.
-#' @import ranger
 #' @export
 getImpRfZ<-function(x,y,ntree=500,num.trees=ntree,...){
  if(inherits(y,"Surv")){
@@ -192,6 +191,7 @@ comment(getImpFerns)<-'rFerns importance'
 #' @references \url{https://github.com/chasedehan/BoostARoota}
 #' @export
 getImpXgboost<-function(x,y,nrounds=5,verbose=0,...){
+ for(e in 1:ncol(x)) x[,e]<-as.numeric(x[,e])
  xgboost::xgb.importance(
   model=xgboost::xgboost(
    data=as.matrix(x),
