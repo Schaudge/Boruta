@@ -2,6 +2,7 @@
 .gitlab-ci.yml
 .git
 webpage
+side
 .gitignore
 README.md
 .aux$

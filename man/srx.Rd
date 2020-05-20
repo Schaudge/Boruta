@@ -11,7 +11,7 @@ A data frame with 8 predictors, 4 relevant: A, B, AoB, AnB and nA, as well as 3 
 \url{https://mbq.me/blog/relevance-and-redundancy}
 }
 \usage{
-srx
+data(srx)
 }
 \description{
 A synthetic data set with 32 rows corresponding to all combinations of values of five logical features, A, B, N1, N2 and N3.
