@@ -1,4 +1,4 @@
-image: registry.gitlab.com/mbq/arrch:latest
+image: registry.gitlab.com/mbq/arrch:bor.latest
 
 stages:
   - base
@@ -7,8 +7,6 @@ stages:
 r-base:
   stage: base
   script:
-    - R -e "dir.create(.libPaths()[1],recursive=TRUE,showWarnings=FALSE)"
-    - R -e "install.packages(c('randomForest','ranger','xgboost','rFerns','mlbench','survival'),repos='https://cloud.r-project.org/')"
     - R -e "devtools::document()"
     - R -e "devtools::build('.','.')"
     - R -e "devtools::test()"
@@ -24,8 +22,6 @@ r-base:
 r-dev-check:
   stage: check
   script:
-    - RD -e "dir.create(.libPaths()[1],recursive=TRUE,showWarnings=FALSE)"
-    - RD -e "install.packages(c('randomForest','ranger','xgboost','rFerns','mlbench','survival'),repos='https://cloud.r-project.org/')"
     - RD CMD check Boruta_*.tar.gz
   artifacts:
     paths:
