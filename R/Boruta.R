@@ -48,6 +48,7 @@ Boruta<-function(x,...)
 #' \emph{Journal of Statistical Software, 36(11)}, p. 1-13.
 #' URL: \url{http://www.jstatsoft.org/v36/i11/}
 #' @export
+#' @useDynLib Boruta, .registration=TRUE
 #' @examples
 #' set.seed(777)
 #'
