@@ -18,6 +18,8 @@ Boruta<-function(x,...)
 #' It should return a numeric vector of a size identical to the number of columns of its first argument, containing importance measure of respective attributes.
 #' Any order-preserving transformation of this measure will yield the same result.
 #' It is assumed that more important attributes get higher importance. +-Inf are accepted, NaNs and NAs are treated as 0s, with a warning.
+#' @param shadowGenerator Function called to generate shadow features; it is given a copy of \code{x} with only currently non-rejected attributes retained, and is expected to augment this set with an arbitrary number of randomly generated shadows, which will serve as a baseline for generating hits.
+#' Shadows must be generated at the end and the number or order of original features should not be altered -- if this is required, consider writing a custom importance adapter instead.
 #' @param pValue confidence level. Default value should be used.
 #' @param mcAdj if set to \code{TRUE}, a multiple comparisons adjustment using the Bonferroni method will be applied. Default value should be used; older (1.x and 2.x) versions of Boruta were effectively using \code{FALSE}.
 #' @param maxRuns maximal number of importance source runs.
@@ -286,6 +288,16 @@ Boruta.formula<-function(formula,data=.GlobalEnv,...){
  ans$call[[1]]<-as.name('Boruta')
  formula->ans$call[["formula"]]
  return(ans)
+}
+
+#' Default shadow generator
+#'
+#' This function implements the default shadow features generator, which 
+#' makes them by copying all original attributes and permutting the order of values in each 
+#' of them.
+#' @param x an information system to enhance with shadow features.
+#' @return A \code{data.frame} with shadow features appended at the end, named \code{shadowN}.
+defaultShadowGenerator<-function(X){
 }
 
 #' Print Boruta object
