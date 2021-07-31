@@ -59,3 +59,19 @@ test_that("Ranger sources work on censored",{
  expect_equal(sort(getSelectedAttributes(Boruta(X,Y))),sort(names(iris)[-1]))
  expect_equal(sort(getSelectedAttributes(Boruta(X,Y,getImp=getImpRfRaw))),sort(names(iris)[-1]))
 })
+
+#Transdapters
+
+test_that("Impute transdapter removes NAs",{
+ mock<-data.frame(
+  a=c(NA,NA,NA,NA),
+  b=factor('a',NA,'b','b'),
+  c=1:4,
+  d=c(1,2,NA,4)
+ )
+ imputeTransdapter(function(x,y,z,...){
+  expect_equal(z,17)
+  expect_true(!any(is.na(x)))
+  expect_true(!any(is.na(y)))
+ })(mock[,1:3],mock$d,17)
+})

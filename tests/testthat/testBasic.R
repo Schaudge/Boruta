@@ -64,10 +64,6 @@ test_that("Misc errors are caught",{
  names(X)[2]<-"shadow.mystery"
  expect_error(Boruta(X,iris$Species),"Attributes with names ")
 
- X<-iris[,1:4]
- X[20,3]<-NA
- expect_error(Boruta(X,iris$Species),"Cannot process NAs in input")
-
  expect_error(Boruta(iris[,-5],iris$Species,maxRuns=10),"maxRuns must be greater ")
 })
 
