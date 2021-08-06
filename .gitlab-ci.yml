@@ -1,4 +1,4 @@
-image: registry.gitlab.com/mbq/arrch:bor.latest
+image: ghcr.io/arch-r/bor-testing:latest
 
 stages:
   - base

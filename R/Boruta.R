@@ -127,8 +127,6 @@ Boruta.default<-function(x,y,pValue=0.01,mcAdj=TRUE,maxRuns=100,doTrace=0,holdHi
  ##Some checks on x & y
  if(length(grep('^shadow',names(x)))>0)
   stop('Attributes with names starting from "shadow" are reserved for internal use. Please rename them.')
- if(any(c(is.na(x),is.na(y))))
-  stop('Cannot process NAs in input. Please remove them.')
  if(maxRuns<11)
   stop('maxRuns must be greater than 10.')
 
