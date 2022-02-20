@@ -41,3 +41,34 @@ imputeTransdapter<-function(adapter=getImpRfZ){
  composition
 }
  
+#' Decoherence transdapter
+#'
+#' Applies the decoherence transformation to the input, destroying all multivariate interactions.
+#' It will trash the Boruta result, only apply if you know what are you doing!
+#' Works only for categorical decision.
+#' 
+#' @param adapter importance adapter to transform.
+#' @return transformed importance adapter which can be fed into \code{getImp} argument of the \code{\link{Boruta}} function.
+#' @examples
+#' set.seed(777)
+#' # SRX data only contains multivariate interactions
+#' data(srx)
+#' # Decoherence transform removes them all,
+#' # leaving no confirmed features
+#' Boruta(Y~.,data=srx,getImp=decohereTransdapter())
+#' @export
+decohereTransdapter<-function(adapter=getImpRfZ){
+ composition<-function(x,y,...){
+  stopifnot(is.factor(y))
+  mix<-function(x) as.data.frame(lapply(x,sample))
+  do.call(rbind,lapply(split(x,y),mix))->xd
+  adapter(
+   xd,
+   y,
+   ...
+  )
+ }
+ comment(composition)<-sprintf("%s, wrapped into decoherence transdapter",comment(adapter))
+ composition
+}
+ 
