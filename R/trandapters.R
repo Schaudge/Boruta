@@ -60,8 +60,8 @@ imputeTransdapter<-function(adapter=getImpRfZ){
 decohereTransdapter<-function(adapter=getImpRfZ){
  composition<-function(x,y,...){
   stopifnot(is.factor(y))
-  mix<-function(x) as.data.frame(lapply(x,sample))
-  do.call(rbind,lapply(split(x,y),mix))->xd
+  mix<-function(x) as.data.frame(lapply(x,sample),row.names=rownames(x))
+  unsplit(lapply(split(x,y),mix),y)->xd
   adapter(
    xd,
    y,
