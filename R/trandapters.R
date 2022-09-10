@@ -41,3 +41,20 @@ imputeTransdapter<-function(adapter=getImpRfZ){
  composition
 }
  
+#' Conditional transdapter
+#'
+#' Applies downstream importance source on a given object strata and averages their outputs.
+#' 
+#' @param groups groups.
+#' @param adapter importance adapter to transform.
+#' @return transformed importance adapter which can be fed into \code{getImp} argument of the \code{\link{Boruta}} function.
+#' @export
+conditionalTransdapter<-function(groups,adapter=getImpRfZ){
+ as.numeric(table(groups))/length(groups)->w
+ stopifnot(is.factor(groups))
+ composition<-function(x,y,...)
+  colSums(w*t(sapply(levels(groups),function(l) adapter(x[groups==l,],y[groups==l],...))))
+ comment(composition)<-sprintf("%s, wrapped into conditional transdapter",comment(adapter))
+ composition
+}
+ 
