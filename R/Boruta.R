@@ -294,7 +294,7 @@ Boruta.formula<-function(formula,data=.GlobalEnv,...){
 #' @return Invisible copy of \code{x}.
 #' @export
 print.Boruta<-function(x,...){
- if(class(x)!='Boruta') stop("This is NOT a Boruta object!")
+ stopifnot(inherits(x,'Boruta'))
  cat(paste('Boruta performed ',dim(x$ImpHistory)[1],' iterations in ',format(x$timeTaken),'.\n',sep=''))
  if(x$roughfixed) cat(paste('Tentatives roughfixed over the last ',x$averageOver,' iterations.\n',sep=''))
  if(sum(x$finalDecision=='Confirmed')==0){
