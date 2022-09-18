@@ -91,6 +91,10 @@ test_that("TentativeRoughFix works",{
  set.seed(777)
  Boruta(MockX[,1:7],MockY,getImp=getImpMock)->B
  expect_warning(TentativeRoughFix(B))
+
+ set.seed(777)
+ Boruta(MockX[,1:8],MockY,getImp=getImpMock)->Bf
+ expect_equal(getSelectedAttributes(Bf),c("Rel1","Rel2","Rel3","Tent1"))
 })
 
 test_that("Edge cases are printed",{
