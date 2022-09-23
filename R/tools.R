@@ -100,7 +100,7 @@ TentativeRoughFix<-function(x,averageOver=Inf){
   averageOver<-nRuns
 
  impHistorySubset<-x$ImpHistory[(nRuns-averageOver+1):nRuns,]
- medianTentImp<-sapply(impHistorySubset[,tentIdx],stats::median)
+ medianTentImp<-apply(impHistorySubset[,tentIdx,drop=FALSE],2,stats::median)
  medianShaMaxImp<-stats::median(impHistorySubset[,'shadowMax'])
  medianTentImp>medianShaMaxImp->toOrdain
 
