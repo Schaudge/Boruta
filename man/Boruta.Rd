@@ -145,5 +145,5 @@ plot(Bor.son,sort=FALSE)
 \references{
 Miron B. Kursa, Witold R. Rudnicki (2010). Feature Selection with the Boruta Package.
 \emph{Journal of Statistical Software, 36(11)}, p. 1-13.
-URL: \url{https://doi.org/10.18637/jss.v036.i11}
+URL: \doi{10.18637/jss.v036.i11}
 }

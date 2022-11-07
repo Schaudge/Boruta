@@ -2,7 +2,7 @@
 % Please edit documentation in R/trandapters.R
 \name{decohereTransdapter}
 \alias{decohereTransdapter}
-\title{Decoherence transdapter}
+\title{Decohere transdapter}
 \usage{
 decohereTransdapter(adapter = getImpRfZ)
 }
