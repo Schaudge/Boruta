@@ -72,6 +72,34 @@ decohereTransdapter<-function(adapter=getImpRfZ){
  composition
 }
 
+#' Feature pair transdapter
+#'
+#' Wraps the importance adapter to work on order relations between pairs of attributes,
+#' 
+#' @param adapter importance adapter to transform.
+#' @param reduce function to reduce scores of all relevant pairs back into an attribute score.
+#' @return transformed importance adapter which can be fed into \code{getImp} argument of the \code{\link{Boruta}} function.
+#' @examples
+#' set.seed(777)
+#' data(iris)
+#' Boruta(Species~.,data=iris,getImp=pairsTransdapter())
+#' @export
+pairsTransdapter<-function(adapter=getImpRfZ,reduce=function(x) mean(x,na.rm=TRUE)){
+ composition<-function(x,y,...){
+  expand.grid(a=1:ncol(x),b=1:ncol(x))->p
+  p[p$a<p$b,]->p
+  xt<-data.frame(x[,p$a]>x[,p$b])
+  names(xt)<-sprintf("tsp%d",1:ncol(xt))
+  adapter(xt,y,...)->ps
+  stats::setNames(
+   sapply(1:ncol(x),function(x) reduce(ps[p$a==x | p$b==x])),
+   names(x)
+  )
+ }
+ comment(composition)<-sprintf("%s, wrapped into TSP transdapter",comment(adapter))
+ composition
+}
+
 #' Conditional transdapter
 #'
 #' Applies downstream importance source on a given object strata and averages their outputs.
