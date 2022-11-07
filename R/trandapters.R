@@ -91,7 +91,7 @@ pairsTransdapter<-function(adapter=getImpRfZ,reduce=function(x) mean(x,na.rm=TRU
   xt<-data.frame(x[,p$a]>x[,p$b])
   names(xt)<-sprintf("tsp%d",1:ncol(xt))
   adapter(xt,y,...)->ps
-  setNames(
+  stats::setNames(
    sapply(1:ncol(x),function(x) reduce(ps[p$a==x | p$b==x])),
    names(x)
   )
