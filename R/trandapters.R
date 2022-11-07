@@ -8,7 +8,7 @@ fixna<-function(x){
  x
 }
 
-#' Imputation transdapter
+#' Impute transdapter
 #'
 #' Wraps the importance adapter to accept NAs in input.
 #' 
@@ -41,7 +41,7 @@ imputeTransdapter<-function(adapter=getImpRfZ){
  composition
 }
  
-#' Decoherence transdapter
+#' Decohere transdapter
 #'
 #' Applies the decoherence transformation to the input, destroying all multivariate interactions.
 #' It will trash the Boruta result, only apply if you know what are you doing!

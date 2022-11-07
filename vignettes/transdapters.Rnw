@@ -37,7 +37,9 @@ Boruta(Species~.,iris,getImp=noopTransdapter())
 @
 
 \noindent As expected, this transdpater has not altered the Boruta result.
-Let us now discuss the transdapters shipped with the Boruta package.
+
+The Boruta package ships with several experimental transdapters.
+Let us now briefly discuss each of them them.
 
 \section{Impute transdapter}
 Many potential importance source, in particular the default ranger \cite{Wright2015} implementation of Random Forest, can't handle missing values (\texttt{NA}s) in its input.
@@ -82,17 +84,18 @@ Let us try this on the \texttt{srx} data:
 set.seed(17)
 Boruta(Y~.,srx,getImp=decohereTransdapter())
 @
-\noindent We can see that most originally confirmed features are no longer relevant after decoherence transform is applied. 
-Now, we can apply this to a much simpler \texttt{iris} data:
-<<irisdeco>>=
-set.seed(17)
-Boruta(Species~.,iris,getImp=decohereTransdapter())
-@
-\noindent Here, the result is the same --- we can see that marginal interactions here are sufficient to uncover relevant features.
+\noindent We can see that most originally confirmed features are no longer relevant after decoherence transform is applied, save for \texttt{AnB} and \texttt{AoB} of a substantial marginal importance.
 
 One should note that this approach is a heuristic and should be treated with reservation.
 For instance, it may reduce the estimated shadow importance and henceforth spuriously elevate originally rejected features to a confirmed status.
 
+\section{Conditional transdapter}
+
+The conditional transdapter applies the wrapped importance source to each stratum of a given stratification vector, and averages importance scores with weights proportional to strata sizes.
+This allows one to control for a certain variable or inject additional information.
+
+Note that each strata should be large enough to be a proper sample for the information source used; stratification into too many very small groups may lead to spurious results.
+Moreover, be aware that certain importance sources may be incompatible with the way this transdapter collects importance from strata; additional normalisation might be necessary.
 
 \bibliography{vig}
 \end{document}
