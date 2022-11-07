@@ -2,7 +2,7 @@
 % Please edit documentation in R/trandapters.R
 \name{imputeTransdapter}
 \alias{imputeTransdapter}
-\title{Imputation transdapter}
+\title{Impute transdapter}
 \usage{
 imputeTransdapter(adapter = getImpRfZ)
 }
