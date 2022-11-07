@@ -8,7 +8,7 @@ fixna<-function(x){
  x
 }
 
-#' Imputation transdapter
+#' Impute transdapter
 #'
 #' Wraps the importance adapter to accept NAs in input.
 #' 
@@ -38,6 +38,54 @@ imputeTransdapter<-function(adapter=getImpRfZ){
    ...
   )
  comment(composition)<-sprintf("%s, wrapped into imputation transdapter",comment(adapter))
+ composition
+}
+ 
+#' Decohere transdapter
+#'
+#' Applies the decoherence transformation to the input, destroying all multivariate interactions.
+#' It will trash the Boruta result, only apply if you know what are you doing!
+#' Works only for categorical decision.
+#' 
+#' @param adapter importance adapter to transform.
+#' @return transformed importance adapter which can be fed into \code{getImp} argument of the \code{\link{Boruta}} function.
+#' @examples
+#' set.seed(777)
+#' # SRX data only contains multivariate interactions
+#' data(srx)
+#' # Decoherence transform removes them all,
+#' # leaving no confirmed features
+#' Boruta(Y~.,data=srx,getImp=decohereTransdapter())
+#' @export
+decohereTransdapter<-function(adapter=getImpRfZ){
+ composition<-function(x,y,...){
+  stopifnot(is.factor(y))
+  mix<-function(x) as.data.frame(lapply(x,sample),row.names=rownames(x))
+  unsplit(lapply(split(x,y),mix),y)->xd
+  adapter(
+   xd,
+   y,
+   ...
+  )
+ }
+ comment(composition)<-sprintf("%s, wrapped into decoherence transdapter",comment(adapter))
+ composition
+}
+
+#' Conditional transdapter
+#'
+#' Applies downstream importance source on a given object strata and averages their outputs.
+#' 
+#' @param groups groups.
+#' @param adapter importance adapter to transform.
+#' @return transformed importance adapter which can be fed into \code{getImp} argument of the \code{\link{Boruta}} function.
+#' @export
+conditionalTransdapter<-function(groups,adapter=getImpRfZ){
+ as.numeric(table(groups))/length(groups)->w
+ stopifnot(is.factor(groups))
+ composition<-function(x,y,...)
+  colSums(w*t(sapply(levels(groups),function(l) adapter(x[groups==l,],y[groups==l],...))))
+ comment(composition)<-sprintf("%s, wrapped into conditional transdapter",comment(adapter))
  composition
 }
  
