@@ -70,7 +70,7 @@ All-missing features are replaced with a vector of zeroes, which is non-importan
 One should note that this method is best suited for data sets with only a minor fraction of missing values, preferably randomly distributed.
 Also it rather underestimates the importance of incomplete features.
 
-\section{Decoherence transdapter}
+\section{Decohere transdapter}
 The main gain from using Boruta is that it can take into account multivariate interactions between groups features and the decision.
 Decoherence transdapter can be used to validate whether multivariate inference is required to identify certain feature as relevant, or just its marginal interaction with the decision suffices.
 
@@ -82,7 +82,7 @@ Let us try this on the \texttt{srx} data:
 set.seed(17)
 Boruta(Y~.,srx,getImp=decohereTransdapter())
 @
-\noindent We can see that in this set, heavily exploiting multivariate interactions, decoherence transformation has removed all previously important features. 
+\noindent We can see that most originally confirmed features are no longer relevant after decoherence transform is applied. 
 Now, we can apply this to a much simpler \texttt{iris} data:
 <<irisdeco>>=
 set.seed(17)
