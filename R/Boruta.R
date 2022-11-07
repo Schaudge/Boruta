@@ -46,7 +46,7 @@ Boruta<-function(x,...)
 #' Instead, you can use \code{\link{TentativeRoughFix}} function, which will perform other, weaker test to make a final decision, or simply treat them as undecided in further analysis.
 #' @references Miron B. Kursa, Witold R. Rudnicki (2010). Feature Selection with the Boruta Package.
 #' \emph{Journal of Statistical Software, 36(11)}, p. 1-13.
-#' URL: \url{https://www.jstatsoft.org/v36/i11/}
+#' URL: \url{https://doi.org/10.18637/jss.v036.i11}
 #' @export
 #' @examples
 #' set.seed(777)
