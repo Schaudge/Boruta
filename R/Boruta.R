@@ -46,7 +46,7 @@ Boruta<-function(x,...)
 #' Instead, you can use \code{\link{TentativeRoughFix}} function, which will perform other, weaker test to make a final decision, or simply treat them as undecided in further analysis.
 #' @references Miron B. Kursa, Witold R. Rudnicki (2010). Feature Selection with the Boruta Package.
 #' \emph{Journal of Statistical Software, 36(11)}, p. 1-13.
-#' URL: \url{http://www.jstatsoft.org/v36/i11/}
+#' URL: \doi{10.18637/jss.v036.i11}
 #' @export
 #' @examples
 #' set.seed(777)
@@ -322,7 +322,7 @@ print.Boruta<-function(x,...){
 #'
 #' This is set is an easy way to demonstrate the difference between all relevant feature selection methods, which should select all features except N1--N3, and minimal optimal ones, which will probably ignore most of them.
 #' @format A data frame with 8 predictors, 4 relevant: A, B, AoB, AnB and nA, as well as 3 irrelevant N1, N2 and N3, and decision attribute Y.
-#' @source \url{https://mbq.me/blog/relevance-and-redundancy}
+#' @source \url{https://blog.mbq.me/relevance-and-redundancy/}
 #' @usage data(srx)
 "srx"
 

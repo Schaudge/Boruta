@@ -8,7 +8,7 @@ fixna<-function(x){
  x
 }
 
-#' Imputation transdapter
+#' Impute transdapter
 #'
 #' Wraps the importance adapter to accept NAs in input.
 #' 
@@ -41,7 +41,7 @@ imputeTransdapter<-function(adapter=getImpRfZ){
  composition
 }
  
-#' Decoherence transdapter
+#' Decohere transdapter
 #'
 #' Applies the decoherence transformation to the input, destroying all multivariate interactions.
 #' It will trash the Boruta result, only apply if you know what are you doing!
@@ -72,7 +72,7 @@ decohereTransdapter<-function(adapter=getImpRfZ){
  composition
 }
 
-#' Attribute pair transdapter
+#' Feature pair transdapter
 #'
 #' Wraps the importance adapter to work on order relations between pairs of attributes,
 #' 
@@ -91,7 +91,7 @@ pairsTransdapter<-function(adapter=getImpRfZ,reduce=function(x) mean(x,na.rm=TRU
   xt<-data.frame(x[,p$a]>x[,p$b])
   names(xt)<-sprintf("tsp%d",1:ncol(xt))
   adapter(xt,y,...)->ps
-  setNames(
+  stats::setNames(
    sapply(1:ncol(x),function(x) reduce(ps[p$a==x | p$b==x])),
    names(x)
   )

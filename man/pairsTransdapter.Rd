@@ -2,7 +2,7 @@
 % Please edit documentation in R/trandapters.R
 \name{pairsTransdapter}
 \alias{pairsTransdapter}
-\title{Attribute pair transdapter}
+\title{Feature pair transdapter}
 \usage{
 pairsTransdapter(
   adapter = getImpRfZ,
