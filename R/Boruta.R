@@ -268,17 +268,11 @@ Boruta.default<-function(x,y,pValue=0.01,mcAdj=TRUE,maxRuns=100,doTrace=0,holdHi
 #' @param formula alternatively, formula describing model to be analysed.
 #' @param data in which to interpret formula.
 #' @export
-Boruta.formula<-function(formula,data=.GlobalEnv,...){
- ##Grab and interpret the formula
- stats::terms.formula(formula,data=data)->t
- x<-eval(attr(t,"variables"),data)
- apply(attr(t,"factors"),1,sum)>0->sel
- nam<-rownames(attr(t,"factors"))[sel]
- data.frame(x[sel])->df;names(df)<-nam
- x[[attr(t,"response")]]->dec
+Boruta.formula<-function(formula,data,...){
+ make_df(formula,data,parent.frame())->d
 
  ##Run Boruta
- ans<-Boruta.default(df,dec,...)
+ ans<-Boruta.default(d$X,d$Y,...)
  ans$call<-match.call()
  ans$call[[1]]<-as.name('Boruta')
  formula->ans$call[["formula"]]

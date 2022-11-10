@@ -1,4 +1,5 @@
 Changes in X.0:
+ - Faster parser for the formula interface.
  - Transdapter for handling missing values with importance
  sources which do not support them.
  - Transdapter for applying decoherence transformation to input.
