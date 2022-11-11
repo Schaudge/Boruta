@@ -110,7 +110,6 @@ It is also possible that RF importance is not best suited to catch the informati
 
 Anyhow, Boruta allows you to switch importance source to an arbitrary function which gets an information system and returns a vector of numeric importance scores of all features.
 The package already includes adapters for several importance scorers and their various configurations; all start with a \texttt{getImp} prefix.
-Importance adapters may also be modified by transdapters (functions with names ending with \texttt{Transdapter}) to achieve some additional goals; consult the transdapter vignette or manual for more details.
 
 In particular, there is one for rFerns \cite{Kursa2014a}, an implementation of random ferns, a purely stochastic ensemble classifier which can usually provide similar importance scores as Random Forest, but in substantially shorter time:
 
@@ -121,6 +120,8 @@ Boruta(Species~.,data=irisE,getImp=getImpFerns)
 
 You can pass arguments to the importance provider by providing it to the Boruta call; for instance, ranger, the default importance provider, makes use of all available CPU threads, won't always be the optimal choice.
 Setting \texttt{num.threads} in the Boruta call will cause it to relay this argument to the \texttt{ranger} function, and hence limit the training process parallelism.
+
+Importance adapters may also be modified by transdapters (functions with names ending with \texttt{Transdapter}) to achieve some additional goals; consult the transdapter vignette or manual for more details.
 
 \section{Caveats}
 Few things worth noting before using Boruta in production:
