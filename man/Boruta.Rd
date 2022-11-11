@@ -20,7 +20,7 @@ Boruta(x, ...)
   ...
 )
 
-\method{Boruta}{formula}(formula, data = .GlobalEnv, ...)
+\method{Boruta}{formula}(formula, data, ...)
 }
 \arguments{
 \item{x}{data frame of predictors.}
