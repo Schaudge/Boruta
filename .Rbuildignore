@@ -9,3 +9,5 @@ README.md
 .log$
 .bbl$
 .blg$
+^doc$
+^Meta$

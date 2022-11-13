@@ -17,6 +17,7 @@ fixna<-function(x){
 #' @note An all-NA feature will be converted to all zeroes, which should be ok as a totally non-informative value with most methods, but it is not universally correct.
 #' Ideally, one should avoid having such features in input altogether.
 #' @examples
+#' \dontrun{
 #' set.seed(777)
 #' data(srx)
 #' srx_na<-srx
@@ -29,6 +30,7 @@ fixna<-function(x){
 #' srx_na[holes]<-NA
 #' # Use impute transdapter to mitigate them with internal imputation
 #' Boruta(Y~.,data=srx_na,getImp=imputeTransdapter(getImpRfZ))
+#' }
 #' @export
 imputeTransdapter<-function(adapter=getImpRfZ){
  composition<-function(x,y,...)

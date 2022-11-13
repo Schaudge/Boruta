@@ -20,6 +20,7 @@ An all-NA feature will be converted to all zeroes, which should be ok as a total
 Ideally, one should avoid having such features in input altogether.
 }
 \examples{
+\dontrun{
 set.seed(777)
 data(srx)
 srx_na<-srx
@@ -32,4 +33,5 @@ holes<-cbind(
 srx_na[holes]<-NA
 # Use impute transdapter to mitigate them with internal imputation
 Boruta(Y~.,data=srx_na,getImp=imputeTransdapter(getImpRfZ))
+}
 }
